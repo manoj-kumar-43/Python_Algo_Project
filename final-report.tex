@@ -1,0 +1,779 @@
+\documentclass[12pt,a4paper]{report}
+% Consolidated packages
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{titlesec}
+\usepackage{amsmath,amssymb}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{tcolorbox}
+\usepackage{tikz}
+\usepackage{caption}
+\usepackage{subcaption}
+
+% Document layout
+\geometry{margin=1in}
+\setlength{\parskip}{6pt}
+\setlength{\parindent}{0pt}
+
+% ---- Colors & Hyperref ----
+\definecolor{MidnightBlue}{HTML}{003366} % section title
+\definecolor{PrimaryTeal}{HTML}{0F766E}  % accent
+\definecolor{SubGray}{HTML}{555555}      % subtitle / meta
+\definecolor{LightSlate}{HTML}{F1F5F9}   % box background
+\definecolor{DarkText}{HTML}{0B1220}     % body text
+
+% Backwards-compatible aliases used elsewhere in the document
+\let\primary\PrimaryTeal
+\let\accent\PrimaryTeal
+\let\light\LightSlate
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=PrimaryTeal,
+  urlcolor=PrimaryTeal,
+  citecolor=PrimaryTeal
+}
+
+% ---- Heading formats ----
+\titleformat{\chapter}[hang]{\bfseries\Huge\color{MidnightBlue}}{\thechapter.}{1em}{}
+\titleformat{\section}[hang]{\bfseries\Large\color{MidnightBlue}}{\thesection}{1em}{}
+\titleformat{\subsection}[hang]{\bfseries\large\color{SubGray}}{\thesubsection}{1em}{}
+
+% ---- Header / Footer ----
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\thepage}
+\lhead{\textit{\color{MidnightBlue}Comparative Study of Sorting Algorithms}}
+
+% ---- Code Styling (kept for any other code blocks) ----
+\lstdefinestyle{code}{
+  basicstyle=\ttfamily\small\color{DarkText},
+  backgroundcolor=\color{LightSlate},
+  frame=single,
+  rulecolor=\color{PrimaryTeal},
+  keywordstyle=\color{PrimaryTeal}\bfseries,
+  commentstyle=\color{SubGray}\itshape,
+  stringstyle=\color{PrimaryTeal},
+  numbers=left,
+  numberstyle=\tiny\color{SubGray},
+  stepnumber=1,
+  numbersep=8pt,
+  showstringspaces=false,
+  tabsize=2,
+  breaklines=true,
+  breakatwhitespace=true
+}
+
+% ---- New: Pseudocode listing style with subtle grey box ----
+\lstdefinestyle{pseudocode}{
+  basicstyle=\ttfamily\small\color{DarkText},
+  backgroundcolor=\color{gray!12},      % subtle grey box background
+  frame=single,
+  rulecolor=\color{gray!45},            % grey border
+  xleftmargin=6pt,
+  xrightmargin=6pt,
+  captionpos=b,
+  keepspaces=true,
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  tabsize=4,
+  numbers=none,
+  breaklines=true,
+  breakatwhitespace=true
+}
+
+% ---- Convenience Macros ----
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\degree}{^\circ}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand{\brak}[1]{\left(#1\right)}
+\newcommand{\croch}[1]{\left[#1\right]}
+\newcommand{\figref}[1]{Figure~\ref{#1}}
+\newcommand{\tabref}[1]{Table~\ref{#1}}
+\newcommand{\secref}[1]{Section~\ref{#1}}
+\newcommand{\chapref}[1]{Chapter~\ref{#1}}
+\newcommand{\algoref}[1]{Algorithm~\ref{#1}}
+\newcommand{\eqnref}[1]{Equation~\ref{#1}}
+\newcommand{\code}[1]{\texttt{#1}}
+
+% ---- Title Page ----
+\thispagestyle{empty}
+\color{DarkText}
+\begin{titlepage}
+  \centering
+  \vspace*{0.6cm} % reduced top space to keep title on first page
+
+  % ---- Title ----
+  {\Huge\bfseries\color{MidnightBlue} Comparative Study and Complexity \\[6pt] Analysis of Sorting Algorithms \par}
+  \vspace{0.3cm} % tightened space between title and subtitle
+  {\large\color{SubGray} DAA SEC-R \par}
+  \vspace{0.6cm} % reduced space before info box
+
+  % ---- Course / Project Info box ----
+  \begin{tcolorbox} [
+    colback=LightSlate,
+    colframe=PrimaryTeal,
+    boxrule=0.7pt,
+    arc=5mm,
+    left=8pt,
+    right=8pt,
+    top=8pt,
+    bottom=8pt,
+    width=0.92\textwidth,
+    halign=center
+  ]
+    \begin{minipage}{0.17\textwidth}
+      % Optional logo placeholder
+      % \includegraphics[width=\linewidth]{path/to/logo.png}
+    \end{minipage}\hfill
+    \begin{minipage}{0.80\textwidth}
+      \vspace{2pt}
+      \begin{tabular}{@{} >{\raggedleft\bfseries\color{MidnightBlue}}p{0.30\textwidth}  p{0.62\textwidth} @{}}
+        Course: & \color{DarkText} Design and Analysis of Algorithms \\[6pt]
+        Instructor : & \color{DarkText} Prof.\ Prince Kumar P \\[6pt]
+        Institution: & \color{DarkText} SRM University AP \\[6pt]
+        Section: & \color{DarkText} DAA SEC-R \\[6pt]
+        Project Title: & \color{DarkText} Comparative Study and Complexity Analysis of Sorting Algorithms \\[6pt]
+        Date: & \color{DarkText} \today \\
+      \end{tabular}
+      \vspace{4pt}
+    \end{minipage}
+  \end{tcolorbox}
+
+  \vspace{0.6cm} % tightened before group members box
+
+  % ---- Group members table ----
+  {\large\bfseries\color{MidnightBlue} Group Members \par}
+  \vspace{6pt}
+  \begin{tcolorbox} [
+    colback=white,
+    colframe=PrimaryTeal,
+    boxrule=0.6pt,
+    arc=4mm,
+    left=8pt,
+    right=8pt,
+    top=6pt,
+    bottom=6pt,
+    width=0.92\textwidth
+  ]
+    \centering
+    \begin{tabular}{@{} p{0.58\textwidth} p{0.30\textwidth} @{}}
+      \textbf{\color{MidnightBlue} Name} & \textbf{\color{MidnightBlue} Roll No.} \\[6pt]
+      \hline \\[-6pt]
+      Rohan Kumar Mohanta & AP24110011046 \\[6pt]
+      Aditya Pratap Singh & AP24110011050 \\[6pt]
+      Preetimohan Pratihari & AP24110011055 \\[6pt]
+      Aryan Bharmauria & AP24110011078 \\[6pt]
+      Devraj Sahani & AP24110011150 \\[6pt]
+    \end{tabular}
+  \end{tcolorbox}
+
+  \vfill
+
+  % overlayed project-assessment box at bottom of first page (no layout impact)
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[anchor=south, yshift=12mm] at (current page.south) {
+      \begin{tcolorbox} [
+        colback=LightSlate,
+        colframe=PrimaryTeal,
+        boxrule=0.7pt,
+        arc=4mm,
+        left=8pt,
+        right=8pt,
+        top=6pt,
+        bottom=6pt,
+        width=0.7\textwidth,
+        halign=center
+      ]
+        \small\bfseries\color{PrimaryTeal} Project Assignment 1
+      \end{tcolorbox}
+    };
+  \end{tikzpicture}
+
+  \vspace{1.0cm}
+\end{titlepage}
+
+\tableofcontents
+\listoffigures
+\clearpage
+
+% -----------------------------
+% Abstract
+% -----------------------------
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+This report delivers a systematic comparison of selected sorting algorithms through combined theoretical analysis and controlled experiments. We implement classical comparison-based methods (Insertion, Merge, Quick, Heap) and non-comparison approaches (Counting, Radix, Bucket), and evaluate their performance across varied input sizes and distributions (random, sorted, reverse-sorted). Experimental runs follow a reproducible protocol: warm-up iterations, multiple independent trials (T = 5), and high-resolution timing, with results reported as mean runtime and dispersion (standard deviation, median/IQR where appropriate). Key findings highlight that low-overhead algorithms outperform asymptotically faster sorts on small inputs, whereas $O(n\log n)$ methods and well-tuned linear-time sorts dominate at scale when their assumptions hold. All experiments, environment specifications, and scripts are documented to enable exact reproduction of the reported results.
+
+\clearpage
+
+% -----------------------------
+% Introduction
+% -----------------------------
+\chapter{Introduction}
+Sorting algorithms play an essential role in data processing and computational efficiency. A well-chosen sorting algorithm can significantly reduce runtime and improve performance.
+
+Sorting algorithms are categorized as:
+\begin{itemize}
+    \item \textbf{Comparison-based:} e.g., Bubble, Merge, Quick, Heap Sort
+    \item \textbf{Non-comparison-based:} e.g., Counting, Radix Sort
+\end{itemize}
+
+This project includes both theoretical complexity analysis and experimental benchmarking using datasets of different sizes and distributions.
+
+% -----------------------------
+% Algorithms and Pseudocode
+% -----------------------------
+\chapter{Algorithms and Pseudocode}
+This chapter presents detailed pseudocode for the sorting algorithms analyzed in this study.
+
+\section{Bubble Sort}
+\textbf{Description:} Bubble Sort repeatedly steps through the list, compares adjacent elements, and swaps them if they are in the wrong order.
+
+\textbf{Time Complexity:} Best: $O(n)$, Average: $O(n^2)$, Worst: $O(n^2)$
+
+\textbf{Space Complexity:} $O(1)$ | Stable: Yes | In-place: Yes
+
+\textbf{Pseudocode:}
+\begin{lstlisting}[style=pseudocode,caption={Bubble Sort (pseudocode)}]
+BUBBLE_SORT(arr):
+    n = length(arr)
+    for i = 0 to n-1:
+        swapped = false
+        for j = 0 to n-i-2:
+            if arr[j] > arr[j+1]:
+                swap(arr[j], arr[j+1])
+                swapped = true
+        if not swapped:
+            break
+    return arr
+\end{lstlisting}
+
+\section{Selection Sort}
+\textbf{Description:} Selection Sort divides the input list into a sorted and an unsorted region. It repeatedly selects the smallest (or largest) element from the unsorted region and moves it to the end of the sorted region.
+
+\textbf{Time Complexity:} Best: $O(n^2)$, Average: $O(n^2)$, Worst: $O(n^2)$
+
+\textbf{Space Complexity:} $O(1)$ | Stable: No | In-place: Yes
+
+\textbf{Pseudocode:}
+\begin{lstlisting}[style=pseudocode,caption={Selection Sort (pseudocode)}]
+SELECTION_SORT(arr):
+    n = length(arr)
+    for i = 0 to n-1:
+        min_idx = i
+        for j = i+1 to n-1:
+            if arr[j] < arr[min_idx]:
+                min_idx = j
+        swap(arr[i], arr[min_idx])
+    return arr
+\end{lstlisting}
+
+\section{Insertion Sort}
+\textbf{Description:} Insertion Sort builds the final sorted array one item at a time. It iterates through the input, removing one element and finding the location it belongs within the sorted list.
+
+\textbf{Time Complexity:} Best: $O(n)$, Average: $O(n^2)$, Worst: $O(n^2)$
+
+\textbf{Space Complexity:} $O(1)$ | Stable: Yes | In-place: Yes
+
+\textbf{Pseudocode:}
+\begin{lstlisting}[style=pseudocode,caption={Insertion Sort (pseudocode)}]
+INSERTION_SORT(arr):
+    for i = 1 to length(arr)-1:
+        key = arr[i]
+        j = i - 1
+        while j >= 0 and arr[j] > key:
+            arr[j+1] = arr[j]
+            j = j - 1
+        arr[j+1] = key
+    return arr
+\end{lstlisting}
+
+\section{Merge Sort}
+\textbf{Description:} Merge Sort is a divide-and-conquer algorithm that divides the input array into two halves, recursively sorts them, and then merges the two sorted halves.
+
+\textbf{Time Complexity:} Best: $O(n \log n)$, Average: $O(n \log n)$, Worst: $O(n \log n)$
+
+\textbf{Space Complexity:} $O(n)$ | Stable: Yes | In-place: No
+
+\textbf{Pseudocode:}
+\begin{lstlisting}[style=pseudocode,caption={Merge Sort (pseudocode)}]
+MERGE_SORT(arr):
+    if length(arr) <= 1:
+        return arr
+    mid = length(arr) / 2
+    left = MERGE_SORT(arr[0...mid-1])
+    right = MERGE_SORT(arr[mid...end])
+    return MERGE(left, right)
+
+MERGE(left, right):
+    result = []
+    i = 0, j = 0
+    while i < length(left) and j < length(right):
+        if left[i] <= right[j]:
+            append left[i] to result
+            i = i + 1
+        else:
+            append right[j] to result
+            j = j + 1
+    append remaining elements of left to result
+    append remaining elements of right to result
+    return result
+\end{lstlisting}
+
+\section{Quick Sort (Deterministic)}
+\textbf{Description:} Quick Sort uses the last element as pivot, partitions the array around the pivot, and recursively sorts the subarrays.
+
+\textbf{Time Complexity:} Best: $O(n \log n)$, Average: $O(n \log n)$, Worst: $O(n^2)$
+
+\textbf{Space Complexity:} $O(\log n)$ | Stable: No | In-place: Yes
+
+\textbf{Pseudocode:}
+\begin{lstlisting}[style=pseudocode,caption={Quick Sort (Deterministic) (pseudocode)}]
+QUICK_SORT(arr, low, high):
+    if low < high:
+        pi = PARTITION(arr, low, high)
+        QUICK_SORT(arr, low, pi-1)
+        QUICK_SORT(arr, pi+1, high)
+
+PARTITION(arr, low, high):
+    pivot = arr[high]
+    i = low - 1
+    for j = low to high-1:
+        if arr[j] <= pivot:
+            i = i + 1
+            swap(arr[i], arr[j])
+    swap(arr[i+1], arr[high])
+    return i + 1
+\end{lstlisting}
+
+\section{Quick Sort (Randomized)}
+\textbf{Description:} Randomized Quick Sort selects a random element as pivot before partitioning, reducing the likelihood of worst-case performance.
+
+\textbf{Time Complexity:} Best: $O(n \log n)$, Average: $O(n \log n)$, Worst: $O(n^2)$ (rare)
+
+\textbf{Space Complexity:} $O(\log n)$ | Stable: No | In-place: Yes
+
+\textbf{Pseudocode:}
+\begin{lstlisting}[style=pseudocode,caption={Quick Sort (Randomized) (pseudocode)}]
+QUICK_SORT_RANDOMIZED(arr, low, high):
+    if low < high:
+        pi = RANDOMIZED_PARTITION(arr, low, high)
+        QUICK_SORT_RANDOMIZED(arr, low, pi-1)
+        QUICK_SORT_RANDOMIZED(arr, pi+1, high)
+
+RANDOMIZED_PARTITION(arr, low, high):
+    random_idx = RANDOM(low, high)
+    swap(arr[random_idx], arr[high])
+    return PARTITION(arr, low, high)
+\end{lstlisting}
+
+\section{Heap Sort}
+\textbf{Description:} Heap Sort builds a max heap from the input data, then repeatedly extracts the maximum element and rebuilds the heap.
+
+\textbf{Time Complexity:} Best: $O(n \log n)$, Average: $O(n \log n)$, Worst: $O(n \log n)$
+
+\textbf{Space Complexity:} $O(1)$ | Stable: No | In-place: Yes
+
+\textbf{Pseudocode:}
+\begin{lstlisting}[style=pseudocode,caption={Heap Sort (pseudocode)}]
+HEAP_SORT(arr):
+    n = length(arr)
+    // Build max heap
+    for i = n/2 - 1 down to 0:
+        HEAPIFY(arr, n, i)
+    
+    // Extract elements from heap one by one
+    for i = n-1 down to 1:
+        swap(arr[0], arr[i])
+        HEAPIFY(arr, i, 0)
+    return arr
+
+HEAPIFY(arr, n, i):
+    largest = i
+    left = 2*i + 1
+    right = 2*i + 2
+    
+    if left < n and arr[left] > arr[largest]:
+        largest = left
+    if right < n and arr[right] > arr[largest]:
+        largest = right
+    
+    if largest != i:
+        swap(arr[i], arr[largest])
+        HEAPIFY(arr, n, largest)
+\end{lstlisting}
+
+\section{Counting Sort}
+\textbf{Description:} Counting Sort counts the occurrences of each unique element, then uses arithmetic to determine the positions of elements in the sorted output.
+
+\textbf{Time Complexity:} Best: $O(n+k)$, Average: $O(n+k)$, Worst: $O(n+k)$ (k = range)
+
+\textbf{Space Complexity:} $O(k)$ | Stable: Yes | In-place: No
+
+\textbf{Pseudocode:}
+\begin{lstlisting}[style=pseudocode,caption={Counting Sort (pseudocode)}]
+COUNTING_SORT(arr):
+    min_val = min(arr)
+    max_val = max(arr)
+    range_size = max_val - min_val + 1
+    
+    count = array of size range_size initialized to 0
+    output = array of size length(arr)
+    
+    // Store count of each element
+    for num in arr:
+        count[num - min_val]++
+    
+    // Compute prefix sums
+    for i = 1 to range_size-1:
+        count[i] += count[i-1]
+    
+    // Build output array (in reverse for stability)
+    for i = length(arr)-1 down to 0:
+        output[count[arr[i] - min_val] - 1] = arr[i]
+        count[arr[i] - min_val]--
+    
+    return output
+\end{lstlisting}
+
+\section{Radix Sort}
+\textbf{Description:} Radix Sort processes integer keys by grouping keys by individual digits sharing the same position and value, sorting by each digit from least to most significant.
+
+\textbf{Time Complexity:} Best: $O(d(n+k))$, Average: $O(d(n+k))$, Worst: $O(d(n+k))$ (d = digits)
+
+\textbf{Space Complexity:} $O(n+k)$ | Stable: Yes | In-place: No
+
+\textbf{Pseudocode:}
+\begin{lstlisting}[style=pseudocode,caption={Radix Sort (pseudocode)}]
+RADIX_SORT(arr):
+    max_val = max(arr)
+    exp = 1
+    
+    // Process each digit
+    while max_val / exp > 0:
+        COUNTING_SORT_BY_DIGIT(arr, exp)
+        exp = exp * 10
+    
+    return arr
+
+COUNTING_SORT_BY_DIGIT(arr, exp):
+    n = length(arr)
+    output = array of size n
+    count = array of size 10 initialized to 0
+    
+    // Count occurrences
+    for i = 0 to n-1:
+        index = (arr[i] / exp) % 10
+        count[index]++
+    
+    // Compute prefix sums
+    for i = 1 to 9:
+        count[i] += count[i-1]
+    
+    // Build output array
+    for i = n-1 down to 0:
+        index = (arr[i] / exp) % 10
+        output[count[index] - 1] = arr[i]
+        count[index]--
+    
+    // Copy output to arr
+    for i = 0 to n-1:
+        arr[i] = output[i]
+\end{lstlisting}
+
+\section{Bucket Sort}
+\textbf{Description:} Bucket Sort distributes elements into several buckets, sorts each bucket individually (using another algorithm), and then concatenates the results.
+
+\textbf{Time Complexity:} Best: $O(n+k)$, Average: $O(n+k)$, Worst: $O(n^2)$
+
+\textbf{Space Complexity:} $O(n+k)$ | Stable: Yes | In-place: No
+
+\textbf{Pseudocode:}
+\begin{lstlisting}[style=pseudocode,caption={Bucket Sort (pseudocode)}]
+BUCKET_SORT(arr):
+    n = length(arr)
+    min_val = min(arr)
+    max_val = max(arr)
+    bucket_range = (max_val - min_val) / n + 1
+    
+    // Create empty buckets
+    buckets = array of n empty lists
+    
+    // Distribute elements into buckets
+    for num in arr:
+        index = (num - min_val) / bucket_range
+        if index >= n:
+            index = n - 1
+        append num to buckets[index]
+    
+    // Sort individual buckets and concatenate
+    result = []
+    for bucket in buckets:
+        sorted_bucket = INSERTION_SORT(bucket)
+        append sorted_bucket to result
+    
+    return result
+\end{lstlisting}
+
+% -----------------------------
+% Theoretical Analysis
+% -----------------------------
+\chapter{Theoretical Complexity Analysis}
+
+\section{Time Complexity}
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+Algorithm & Best & Average & Worst & Stable? \\
+\hline
+Bubble Sort & $O(n)$ & $O(n^2)$ & $O(n^2)$ & Yes \\
+Selection Sort & $O(n^2)$ & $O(n^2)$ & $O(n^2)$ & No \\
+Insertion Sort & $O(n)$ & $O(n^2)$ & $O(n^2)$ & Yes \\
+Merge Sort & $O(n \log n)$ & $O(n \log n)$ & $O(n \log n)$ & Yes \\
+Quick Sort (Rand) & $O(n \log n)$ & $O(n \log n)$ & $O(n^2)$ & No \\
+Heap Sort & $O(n \log n)$ & $O(n \log n)$ & $O(n \log n)$ & No \\
+Counting Sort & $O(n + k)$ & $O(n + k)$ & $O(n + k)$ & Yes \\
+Radix Sort & $O(d(n + k))$ & $O(d(n + k))$ & $O(d(n + k))$ & Yes \\
+Bucket Sort & $O(n + k)$ & $O(n + k)$ & $O(n^2)$ & Yes \\
+\hline
+\end{tabular}
+\end{center}
+
+\section{Space Complexity}
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+Algorithm & Best & Average & Worst & In-Place? \\
+\hline
+Bubble Sort & $O(1)$ & $O(1)$ & $O(1)$ & Yes \\
+Selection Sort & $O(1)$ & $O(1)$ & $O(1)$ & Yes \\
+Insertion Sort & $O(1)$ & $O(1)$ & $O(1)$ & Yes \\
+Merge Sort & $O(n)$ & $O(n)$ & $O(n)$ & No \\
+Quick Sort & $O(\log n)$ & $O(\log n)$ & $O(n)$ & Yes* \\
+Heap Sort & $O(1)$ & $O(1)$ & $O(1)$ & Yes \\
+Counting Sort & $O(k)$ & $O(k)$ & $O(k)$ & No \\
+Radix Sort & $O(n + k)$ & $O(n + k)$ & $O(n + k)$ & No \\
+\hline
+\end{tabular}
+\end{center}
+
+\section{Key Insights}
+\begin{itemize}
+    \item Quadratic sorts ($O(n^2)$): Inefficient for large data.
+    \item Divide-and-conquer ($O(n\log n)$): Best general-purpose.
+    \item Linear sorts ($O(n+k)$): Best for fixed-range integers.
+\end{itemize}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{theoretical_complexity_all_algorithms.png}
+    \caption{Theoretical Graphs}
+    \label{fig:placeholder}
+\end{figure}
+
+\chapter{Experimental Setup}
+\section{System Configuration}
+\begin{itemize}
+    \item OS: Arch Linux
+    \item CPU: Intel Core i5 (13th Gen)
+    \item RAM: 16 GB
+    \item Language: Python 3
+    \item Timer: \texttt{time.perf\_counter()} for high-resolution timing
+\end{itemize}
+
+\section{Test Conditions}
+Each algorithm was tested under:
+\begin{itemize}
+    \item Random data (average case)
+    \item Sorted data (best case)
+    \item Reverse sorted data (worst case)
+\end{itemize}
+    \includegraphics[width=1\linewidth]{bar_comparison_n1000.png}
+    \caption{Bar Comparision}
+    \label{fig:placeholder}
+\end{figure}
+
+\chapter{Experimental Vs Theoretical Performace}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{all_algorithms_summary.png}
+    \caption{Experimental Vs Theoretical}
+    \label{fig:placeholder}
+\end{figure}
+
+% Add: image box (replace the placeholder path with your actual image)
+\begin{tcolorbox}[colback=gray!10,colframe=black,arc=3pt,left=6pt,right=6pt,top=6pt,bottom=6pt,width=\textwidth]
+\centering
+\includegraphics[width=0.85\textwidth]{fig_experimental_vs_theoretical_box.png} % <-- replace with real file
+\vspace{0.5em}
+
+\textbf{Figure:} Detailed comparison (replace image above with the exported plot or PNG)
+\end{tcolorbox}
+
+\chapter{Results and Analysis}
+\section{Correctness Testing}
+All algorithms passed the correctness tests on various datasets.
+
+\section{Performance Analysis}
+The following trends were observed:
+
+\subsection*{Complexity Verification}
+\begin{itemize}
+    \item $O(n^2)$ algorithms (Bubble, Selection, Insertion) showed exponential slowdown with increasing $n$.
+    \item $O(n \log n)$ algorithms (Merge, Quick-Rand, Heap) scaled predictably.
+    \item Linear algorithms (Counting, Radix, Bucket) exhibited near-linear scaling.
+\end{itemize}
+
+\subsection*{Best vs Worst Case}
+\begin{itemize}
+    \item Bubble Sort: $\sim$30,000x faster on sorted vs random data.
+    \item Insertion Sort: $\sim$10,000x faster on sorted vs random data.
+    \item Deterministic Quick Sort degraded to $O(n^2)$ for sorted/reverse data.
+    \item Randomized Quick Sort maintained consistent performance.
+\end{itemize}
+
+\subsection*{Algorithm Rankings (n = 10,000,000)}
+\textbf{Random Data (Average Case):}
+\begin{enumerate}
+    \item Counting Sort (~2.3s)
+    \item Bucket Sort (~5.1s)
+    \item Radix Sort (~11.2s)
+    \item Quick Sort (Det) (~19.9s)
+    \item Quick Sort (Rand) (~20.3s)
+    \item Merge Sort (~24.6s)
+    \item Heap Sort (~32.9s)
+\end{enumerate}
+
+\textbf{Sorted Data (Best Case):}
+\begin{enumerate}
+    \item Bubble Sort (~0.03s)
+    \item Insertion Sort (~0.05s)
+    \item Counting Sort (~2.2s)
+    \item Bucket Sort (~4.2s)
+\end{enumerate}
+
+\textbf{Reverse Sorted Data (Worst Case):}
+\begin{enumerate}
+    \item Counting Sort (~2.3s)
+    \item Bucket Sort (~4.5s)
+    \item Radix Sort (~10.7s)
+    \item Merge Sort (~13.2s)
+\end{enumerate}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{all_algorithms_graph.png}
+    \caption{All Sorting Graphs}
+    \label{fig:placeholder}
+\end{figure}
+
+ % ---- Discussion & Analysis ----
+  \chapter{Discussion and Analysis}
+  \section{Observed Trends}
+  \begin{itemize}[leftmargin=2em]
+    \item Small inputs ($n \lesssim 10^3$): Simple algorithms with low constant overhead (Insertion Sort, Bubble Sort in adaptive variants) frequently outperform asymptotically superior methods because setup costs, function call overhead and memory allocation dominate runtime.
+    \item Medium to large inputs ($n \gtrsim 10^4$): Comparison-based divide-and-conquer algorithms (Merge Sort, Quick Sort with robust pivoting, Heap Sort) consistently demonstrate $O(n\log n)$ scaling and stable throughput across distributions when implemented carefully.
+    \item Non-comparison sorts: Counting, Radix and well-parameterized Bucket Sort show near-linear behavior when their assumptions hold (bounded integer range, fixed digit widths, or uniform bucket distributions). Their practical advantage depends strongly on $k$ (range or radix base) and memory availability.
+    \item Data distribution sensitivity: Quick Sort is highly sensitive to pivot selection and input ordering; Merge Sort is stable across distributions but incurs $O(n)$ auxiliary memory; Bucket and Radix sorts depend on distributional assumptions to avoid pathological performance.
+  \end{itemize}
+
+  \section{Practical Interpretation}
+  \begin{itemize}[leftmargin=2em]
+    \item Choose algorithms by problem constraints: use stable, in-place sorts where memory is tight (Heap Sort or in-place Quick variants), prefer Merge/TimSort for stability and predictable behavior on general-purpose datasets, and select Counting/Radix when keys are small integers or fixed-length representations.
+    \item Implementation details matter: loop structure, memory allocation strategy, and language-specific features (e.g., Python list overhead, C++ move semantics) can change cross-over points between algorithms.
+    \item Hybrid strategies are often best in practice: e.g., switch to Insertion Sort for small partitions inside Quick/Merge implementations to reduce overhead and improve constant factors.
+  \end{itemize}
+  
+  \section{Limitations and Threats to Validity}
+  \begin{itemize}[leftmargin=2em]
+    \item Hardware and environment: Results may vary with CPU microarchitecture, cache sizes, memory bandwidth, OS scheduler behavior and background processes. Documented system specs mitigate but do not eliminate variability.
+    \item Implementation variance: Different coding styles, compiler flags, and library implementations produce different constant factors; reproducibility requires sharing source, flags and environment captures.
+    \item Input generation: Random seeds, distribution generators, and synthetic vs real-world data can bias conclusions; include diverse distributions and real datasets where possible.
+    \item Statistical power: Small number of trials or high variance reduces confidence; use sufficient repetitions and robust statistics.
+  \end{itemize}
+
+  \section{Recommendations}
+  \begin{itemize}[leftmargin=2em]
+    \item Reporting: Present mean $\pm$ standard deviation, median/IQR and raw trial data for transparency. Annotate tables/plots with the number of trials, seed policy and whether warm-up runs were used.
+    \item Tuning: Empirically determine thresholds (e.g., insertion sort cutoff) for the target platform rather than relying on textbook heuristics.
+    \item Reproducibility: Archive code, exact compiler/interpreter versions, build flags and a small run-script that reproduces experiments on similar hardware.
+  \end{itemize}
+  
+  \section{Statistical Considerations}
+  \begin{itemize}[leftmargin=2em]
+    \item Use confidence intervals (e.g., bootstrap or t-based when assumptions hold) to quantify uncertainty in mean runtime estimates.
+    \item When comparing two algorithms, report effect sizes and perform hypothesis tests (e.g., paired Wilcoxon or paired t-test depending on distributional assumptions) to avoid over-interpreting small observed differences.
+    \item Visual diagnostics: boxplots, violin plots and cumulative distribution plots help reveal skewness and outliers that mean/std may hide.
+  \end{itemize}
+
+  % ---- Conclusion ----
+  \section{Conclusion and Future Scope}
+
+  \subsection{Conclusion}
+  This study presents a systematic comparison of classical and practical sorting algorithms, combining theoretical complexity with measured performance under varied input sizes and distributions. For small arrays (typically $n \le 10^3$), low-overhead algorithms such as Insertion Sort often outperform more complex methods due to smaller constant factors. For medium to large inputs, comparison-based divide-and-conquer algorithms (Merge Sort, Quick Sort with good pivoting, Heap Sort) consistently achieve $O(n\log n)$ scalability; when problem constraints permit, non-comparison algorithms (Counting, Radix, Bucket) achieve near-linear performance by exploiting key ranges or digit structure. Experimental variability is addressed through repeated trials, warm-up runs, and clear environment reporting to ensure results are reproducible and interpretable.
+
+  \subsection{Future Scope}
+  The following directions outline practical extensions and research opportunities, with short examples of how to pursue them:
+
+  \begin{itemize}[leftmargin=2em]
+    \item Hybrid and adaptive algorithms. Implement hybrids (e.g., use Insertion Sort for partitions smaller than a threshold in Quick/Merge Sort) and adaptive sorts such as TimSort. Example: measure crossover point where insertion-on-partitions improves wall-clock time.
+    \item Pivot and partition strategy evaluation. Study median-of-three, Tukey's ninther, and randomized pivots across distributions to quantify stability and worst-case avoidance. Example: benchmark deterministic vs randomized pivot on nearly-sorted arrays.
+    \item Memory- and cache-aware implementations. Optimize algorithms for cache locality (blocking, in-place merges) and measure memory-bandwidth effects. Example: implement an out-of-place Merge Sort vs an in-place, cache-blocked merge and compare throughput.
+    \item Parallel and distributed sorting. Explore multicore parallelism (OpenMP, C++ std::async), vectorized implementations (SIMD), and distributed sample sort (MPI). Example: parallel mergesort on 8 cores and report scaling efficiency and synchronization overhead.
+    \item GPU-accelerated sorting. Use libraries such as Thrust/CUB or write CUDA kernels for radix/sample sort to evaluate gains on large data. Example: compare CPU radix sort vs GPU radix sort for 100M integers.
+    \item External-memory and streaming sorting. Implement external merge sort for datasets that exceed RAM and examine I/O bottlenecks. Example: sort a 50 GB dataset using buffered runs and multi-way merge, measuring disk I/O vs CPU time.
+    \item Parameter tuning for non-comparison sorts. Investigate base/radix selection, bucket sizing, and stability-preserving variants to optimize practical performance for specific key distributions. Example: tune radix base for 32-bit keys to minimize passes and memory overhead.
+    \item Benchmarking rig and automation. Build an automated benchmark suite with CI, environment capture, and result ingestion (CSV/JSON) to ensure reproducibility. Example: a script that runs trials, records git commit, OS info, compiler flags, and uploads results for plotting.
+    \item Robustness and statistical analysis. Extend reporting to include confidence intervals, hypothesis tests, and effect sizes when comparing algorithms. Example: use bootstrap confidence intervals to compare mean runtimes between two implementations.
+  \end{itemize}
+
+  % ---- Viva Hints ----
+  \chapter{Viva Questions and Answers}
+ \begin{enumerate}[leftmargin=2em]
+   \item \textbf{Q: Why is $O(n\log n)$ a lower bound for comparison-based sorting?}\\
+   \textbf{A:} Any comparison sort can be modeled as a decision tree with $n!$ leaves (all permutations). The tree height (worst-case comparisons) is $\Omega(\log(n!)) = \Omega(n\log n)$, so no comparison-based algorithm can have a better worst-case time complexity.
+   \item \textbf{Q: What is algorithm stability and when does it matter?}\\
+   \textbf{A:} Stability preserves the relative order of equal keys. It matters when secondary keys or multi-field records are present and a previous ordering must be preserved (e.g., sorting by last name then first name using stable sorts).
+   \item \textbf{Q: Define in-place sorting and give examples.}\\
+   \textbf{A:} An in-place algorithm requires only $O(1)$ or $O(\log n)$ extra space beyond the input. Examples: Quick Sort (in-place partitioning), Heap Sort. Merge Sort in its classic form requires $O(n)$ auxiliary space.
+   \item \textbf{Q: How do you choose a pivot in Quick Sort and why does it matter?}\\
+   \textbf{A:} Pivot choices include first/last element, median-of-three, or randomized pivot. Good pivot selection (near median) yields balanced partitions and expected $O(n\log n)$ time; poor choice (e.g., always smallest on sorted data) can degrade to $O(n^2)$.
+   \item \textbf{Q: When are Counting, Radix, or Bucket Sort preferred over comparison sorts?}\\
+   \textbf{A:} When keys come from a bounded integer range or have fixed-length representations, these non-comparison sorts can run in near-linear time $O(n + k)$ or $O(nk)$, outperforming comparison sorts for large $n$ and small $k$ or small number of digits.
+   \item \textbf{Q: What are common hybrid strategies used in practice?}\\
+   \textbf{A:} Hybrids combine algorithms to exploit strengths: use insertion sort for small partitions (low overhead), median-of-three pivot selection, or TimSort (adaptive mergesort + run detection) used in standard libraries for real-world data.
+   \item \textbf{Q: How do you evaluate experimental results and handle variability?}\\
+   \textbf{A:} Use multiple trials (e.g., $T=5$), report mean $\pm$ standard deviation and optionally median/IQR. Perform warm-up runs, fix seeds for reproducibility, and document environment (CPU, OS, compiler/interpreter, flags).
+   \item \textbf{Q: What trade-offs exist between time and space?}\\
+   \textbf{A:} Faster algorithms may require more memory (e.g., Merge Sort uses $O(n)$ extra space), while in-place algorithms reduce memory at possible cost of higher constants or more complex code. Choice depends on dataset size and memory constraints.
+   \item \textbf{Q: How can sorting be parallelized and what are typical gains?}\\
+   \textbf{A:} Parallel sorting uses divide-and-conquer (parallel mergesort, sample sort) or distributed frameworks. Gains depend on load balancing, communication overhead, and memory bandwidth; ideal speedup is bounded by Amdahl's law and data movement costs.
+   \item \textbf{Q: How do you defend anomalies in experimental runs (e.g., spikes)?}\\
+   \textbf{A:} Check for system interference (background processes), re-run experiments, provide robust statistics (median, IQR), and keep raw trial data. Document any CPU throttling, thermal issues, or unequal conditions.
+ \end{enumerate}
+
+% ---- References ----
++\chapter{References}
++\begin{enumerate}[leftmargin=2em]
++  \item Cormen, Leiserson, Rivest, Stein. \textit{Introduction to Algorithms}, MIT Press.
++  \item Sedgewick, Wayne. \textit{Algorithms}, Addison-Wesley.
++  \item Official Python and C++ documentation for timing utilities.
++\end{enumerate}
+
+\end{document}

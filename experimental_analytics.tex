@@ -1,0 +1,199 @@
+\documentclass[12pt,a4paper]{report}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{geometry}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{array}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+
+\geometry{margin=1in}
+\setlength{\parskip}{6pt}
+\setlength{\parindent}{0pt}
+
+\titleformat{\chapter}[hang]{\bfseries\Huge}{\thechapter.}{1em}{}
+\titleformat{\section}[hang]{\bfseries\Large}{\thesection}{1em}{}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\thepage}
+\lhead{Sorting Algorithms - Comparative Study}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{3cm}
+    {\Huge\bfseries EXPERIMENTAL COMPLEXITY ANALYSIS\par}
+    \vspace{0.5cm}
+    {\Huge\bfseries SORTING ALGORITHMS – COMPARATIVE STUDY\par}
+    \vspace{1cm}
+    {\Large Design and Analysis of Algorithms (DAA) Project\par}
+    \vspace{2cm}
+    {\large \textbf{Submitted by:} Rohan \\[0.5cm]
+    Department of Computer Science and Engineering \\[0.2cm]
+    SRM University, AP\par}
+    \vfill
+    \vspace{0.5cm}
+    \vspace{0.5cm}
+    \vspace*{1cm}
+    {\large \textbf{Date:} \today}
+    \vspace*{1cm}
+\end{titlepage}
+
+
+\tableofcontents
+\newpage
+
+\chapter{Introduction}
+Sorting is a fundamental operation in computer science, forming the basis for efficient searching, data analysis, and numerous algorithms. This project conducts a detailed experimental analysis of classical and modern sorting algorithms, comparing their correctness, time complexity, and practical performance under different input conditions.
+
+\section{Objectives}
+\begin{itemize}
+    \item To implement and verify correctness of ten sorting algorithms.
+    \item To analyze performance under best, average, and worst case scenarios.
+    \item To experimentally verify theoretical time complexities.
+    \item To identify the most efficient algorithms for different data scales.
+\end{itemize}
+
+\chapter{Algorithms Studied}
+\begin{enumerate}
+    \item Bubble Sort
+    \item Selection Sort
+    \item Insertion Sort
+    \item Merge Sort
+    \item Quick Sort (Deterministic)
+    \item Quick Sort (Randomized)
+    \item Heap Sort
+    \item Counting Sort
+    \item Radix Sort
+    \item Bucket Sort
+\end{enumerate}
+
+\section{Complexity Overview}
+\begin{center}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Algorithm} & \textbf{Best Case} & \textbf{Average Case} & \textbf{Worst Case} \\
+\hline
+Bubble Sort & $O(n)$ & $O(n^2)$ & $O(n^2)$ \\
+Selection Sort & $O(n^2)$ & $O(n^2)$ & $O(n^2)$ \\
+Insertion Sort & $O(n)$ & $O(n^2)$ & $O(n^2)$ \\
+Merge Sort & $O(n \log n)$ & $O(n \log n)$ & $O(n \log n)$ \\
+Quick Sort (Det) & $O(n \log n)$ & $O(n \log n)$ & $O(n^2)$ \\
+Quick Sort (Rand) & $O(n \log n)$ & $O(n \log n)$ & $O(n \log n)$ \\
+Heap Sort & $O(n \log n)$ & $O(n \log n)$ & $O(n \log n)$ \\
+Counting Sort & $O(n + k)$ & $O(n + k)$ & $O(n + k)$ \\
+Radix Sort & $O(nk)$ & $O(nk)$ & $O(nk)$ \\
+Bucket Sort & $O(n + k)$ & $O(n + k)$ & $O(n^2)$ \\
+\hline
+\end{tabular}
+\end{center}
+
+\chapter{Experimental Setup}
+\section{System Configuration}
+\begin{itemize}
+    \item OS: Arch Linux
+    \item CPU: Intel Core i5 (13th Gen)
+    \item RAM: 16 GB
+    \item Language: Python 3
+    \item Timer: \texttt{time.perf\_counter()} for high-resolution timing
+\end{itemize}
+
+\section{Test Conditions}
+Each algorithm was tested under:
+\begin{itemize}
+    \item Random data (average case)
+    \item Sorted data (best case)
+    \item Reverse sorted data (worst case)
+\end{itemize}
+
+Input sizes used: \\
+$[100, 500, 1000, 5000, 10000, 50000, 100000, 500000, 1000000, 5000000, 10000000]$
+
+\chapter{Results and Analysis}
+\section{Correctness Testing}
+All algorithms passed the correctness tests on various datasets.
+
+\section{Performance Analysis}
+The following trends were observed:
+
+\subsection*{Complexity Verification}
+\begin{itemize}
+    \item $O(n^2)$ algorithms (Bubble, Selection, Insertion) showed exponential slowdown with increasing $n$.
+    \item $O(n \log n)$ algorithms (Merge, Quick-Rand, Heap) scaled predictably.
+    \item Linear algorithms (Counting, Radix, Bucket) exhibited near-linear scaling.
+\end{itemize}
+
+\subsection*{Best vs Worst Case}
+\begin{itemize}
+    \item Bubble Sort: $\sim$30,000x faster on sorted vs random data.
+    \item Insertion Sort: $\sim$10,000x faster on sorted vs random data.
+    \item Deterministic Quick Sort degraded to $O(n^2)$ for sorted/reverse data.
+    \item Randomized Quick Sort maintained consistent performance.
+\end{itemize}
+
+\subsection*{Algorithm Rankings (n = 10,000,000)}
+\textbf{Random Data (Average Case):}
+\begin{enumerate}
+    \item Counting Sort (~2.3s)
+    \item Bucket Sort (~5.1s)
+    \item Radix Sort (~11.2s)
+    \item Quick Sort (Det) (~19.9s)
+    \item Quick Sort (Rand) (~20.3s)
+    \item Merge Sort (~24.6s)
+    \item Heap Sort (~32.9s)
+\end{enumerate}
+
+\textbf{Sorted Data (Best Case):}
+\begin{enumerate}
+    \item Bubble Sort (~0.03s)
+    \item Insertion Sort (~0.05s)
+    \item Counting Sort (~2.2s)
+    \item Bucket Sort (~4.2s)
+\end{enumerate}
+
+\textbf{Reverse Sorted Data (Worst Case):}
+\begin{enumerate}
+    \item Counting Sort (~2.3s)
+    \item Bucket Sort (~4.5s)
+    \item Radix Sort (~10.7s)
+    \item Merge Sort (~13.2s)
+\end{enumerate}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{all_algorithms_graph.png}
+    \caption{All Sorting Graphs}
+    \label{fig:placeholder}
+\end{figure}
+
+\chapter{Discussion}
+\section{Observations}
+\begin{itemize}
+    \item Randomized Quick Sort is the most reliable general-purpose sorter.
+    \item Merge Sort offers predictable $O(n \log n)$ performance but with higher memory usage.
+    \item Counting, Bucket, and Radix Sort dominate large integer datasets due to linear time performance.
+    \item Heap Sort is useful when memory constraints are critical.
+\end{itemize}
+
+\section{Space Complexity}
+\begin{itemize}
+    \item In-place: Bubble, Selection, Insertion, Quick Sort, Heap Sort
+    \item Extra Space: Merge Sort, Counting Sort, Bucket Sort, Radix Sort
+\end{itemize}
+
+\chapter{Conclusion}
+The experimental study confirms that theoretical complexities align well with practical results.  
+For small datasets, insertion sort performs efficiently; for medium to large datasets, randomized quick sort and merge sort offer excellent performance; and for very large integer-based datasets, counting or radix sort are optimal choices.
+
+\chapter*{References}
+\begin{itemize}
+    \item Cormen, T. H., et al. \textit{Introduction to Algorithms}, MIT Press.
+    \item Sedgewick, R. \textit{Algorithms in C++}, Addison-Wesley.
+    \item Levitin, A. \textit{Introduction to the Design and Analysis of Algorithms}, Pearson.
+\end{itemize}
+
+\end{document}

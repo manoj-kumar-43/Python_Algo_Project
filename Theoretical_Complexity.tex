@@ -1,0 +1,213 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{titlesec}
+
+\titleformat{\section}{\Large\bfseries}{\thesection.}{1em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection.}{1em}{}
+
+\begin{document}
+
+\begin{center}
+\LARGE\textbf{THEORETICAL COMPLEXITY ANALYSIS}\\[5pt]
+\Large\textbf{SORTING ALGORITHMS – COMPARATIVE STUDY}\\[5pt]
+\large\textbf{Design and Analysis of Algorithms (DAA) Project}
+\end{center}
+
+\hrule
+\vspace{10pt}
+
+\section{Time Complexity Analysis}
+
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\textbf{Algorithm} & \textbf{Best Case} & \textbf{Average Case} & \textbf{Worst Case} & \textbf{Stable?} \\
+\hline
+Bubble Sort & $O(n)$ & $O(n^2)$ & $O(n^2)$ & Yes \\
+Selection Sort & $O(n^2)$ & $O(n^2)$ & $O(n^2)$ & No \\
+Insertion Sort & $O(n)$ & $O(n^2)$ & $O(n^2)$ & Yes \\
+Merge Sort & $O(n \log n)$ & $O(n \log n)$ & $O(n \log n)$ & Yes \\
+Quick Sort (Det) & $O(n \log n)$ & $O(n \log n)$ & $O(n^2)$ & No \\
+Quick Sort (Rand) & $O(n \log n)$ & $O(n \log n)$ & $O(n^2)^*$ & No \\
+Heap Sort & $O(n \log n)$ & $O(n \log n)$ & $O(n \log n)$ & No \\
+Counting Sort & $O(n + k)$ & $O(n + k)$ & $O(n + k)$ & Yes \\
+Radix Sort & $O(d(n + k))$ & $O(d(n + k))$ & $O(d(n + k))$ & Yes \\
+Bucket Sort & $O(n + k)$ & $O(n + k)$ & $O(n^2)$ & Yes \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent
+\textit{* Expected case; worst case $O(n^2)$ is rare with randomization}\\
+\textbf{where:} $n$ = number of elements, $k$ = range of input, $d$ = number of digits
+
+\vspace{1em}
+\section{Space Complexity Analysis}
+
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\textbf{Algorithm} & \textbf{Best Case} & \textbf{Average Case} & \textbf{Worst Case} & \textbf{In-Place?} \\
+\hline
+Bubble Sort & $O(1)$ & $O(1)$ & $O(1)$ & Yes \\
+Selection Sort & $O(1)$ & $O(1)$ & $O(1)$ & Yes \\
+Insertion Sort & $O(1)$ & $O(1)$ & $O(1)$ & Yes \\
+Merge Sort & $O(n)$ & $O(n)$ & $O(n)$ & No \\
+Quick Sort (Det) & $O(\log n)$ & $O(\log n)$ & $O(n)$ & Yes* \\
+Quick Sort (Rand) & $O(\log n)$ & $O(\log n)$ & $O(n)$ & Yes* \\
+Heap Sort & $O(1)$ & $O(1)$ & $O(1)$ & Yes \\
+Counting Sort & $O(k)$ & $O(k)$ & $O(k)$ & No \\
+Radix Sort & $O(n + k)$ & $O(n + k)$ & $O(n + k)$ & No \\
+Bucket Sort & $O(n + k)$ & $O(n + k)$ & $O(n + k)$ & No \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent
+\textit{* Requires $O(\log n)$ to $O(n)$ stack space for recursion.}
+
+\vspace{1em}
+\section{Key Observations}
+
+\subsection{Comparison-Based Sorts (Lower bound: $\Omega(n \log n)$)}
+\begin{itemize}
+    \item Bubble, Selection, Insertion Sort: $O(n^2)$ — inefficient for large datasets.
+    \item Merge, Heap Sort: $O(n \log n)$ — guaranteed performance, suitable for large data.
+    \item Quick Sort: $O(n \log n)$ average — fastest in practice with small constants.
+\end{itemize}
+
+\subsection{Non-Comparison Sorts (Can beat $O(n \log n)$)}
+\begin{itemize}
+    \item Counting Sort: Linear $O(n + k)$ when $k = O(n)$.
+    \item Radix Sort: $O(d(n + k))$ — efficient for fixed-length integers.
+    \item Bucket Sort: $O(n + k)$ average — best for uniformly distributed data.
+\end{itemize}
+
+\subsection{Space–Time Tradeoffs}
+\begin{itemize}
+    \item In-place ($O(1)$): Bubble, Selection, Insertion, Heap, Quick Sort.
+    \item Extra space ($O(n)$): Merge, Counting, Radix, Bucket Sort.
+    \item Quick Sort uses $O(\log n)$ stack space but sorts in-place.
+\end{itemize}
+
+\subsection{Stability}
+\begin{itemize}
+    \item Stable: Bubble, Insertion, Merge, Counting, Radix, Bucket.
+    \item Unstable: Selection, Quick Sort, Heap Sort.
+    \item Stability matters when sorting by multiple keys.
+\end{itemize}
+
+\section{Detailed Algorithm Analysis}
+
+\subsection{Bubble Sort}
+Time: Best $O(n)$ | Average $O(n^2)$ | Worst $O(n^2)$ \\
+Space: $O(1)$ \\
+Repeatedly swaps adjacent elements if in wrong order. Stable but inefficient.
+
+\subsection{Selection Sort}
+Time: Best $O(n^2)$ | Average $O(n^2)$ | Worst $O(n^2)$ \\
+Space: $O(1)$ \\
+Finds minimum and places it at beginning. Not stable, minimal swaps.
+
+\subsection{Insertion Sort}
+Time: Best $O(n)$ | Average $O(n^2)$ | Worst $O(n^2)$ \\
+Space: $O(1)$ \\
+Builds sorted list one element at a time. Stable, good for small/nigh-sorted inputs.
+
+\subsection{Merge Sort}
+Time: $O(n \log n)$ (all cases) \\
+Space: $O(n)$ \\
+Divide and conquer. Stable and predictable, ideal for linked lists.
+
+\subsection{Quick Sort (Deterministic)}
+Time: Best/Average $O(n \log n)$ | Worst $O(n^2)$ \\
+Space: $O(\log n)$–$O(n)$ \\
+Partition-based. Worst on sorted data. Fast in practice.
+
+\subsection{Quick Sort (Randomized)}
+Time: Expected $O(n \log n)$ | Worst rare $O(n^2)$ \\
+Space: $O(\log n)$–$O(n)$ \\
+Random pivot minimizes worst-case chance. Best average performer.
+
+\subsection{Heap Sort}
+Time: $O(n \log n)$ in all cases \\
+Space: $O(1)$ \\
+Uses heap. Guaranteed $O(n \log n)$, but unstable.
+
+\subsection{Counting Sort}
+Time: $O(n + k)$ \\
+Space: $O(k)$ \\
+Counts occurrences. Stable and linear when $k = O(n)$.
+
+\subsection{Radix Sort}
+Time: $O(d(n + k))$ \\
+Space: $O(n + k)$ \\
+Sorts by digits using a stable sort. Stable and efficient.
+
+\subsection{Bucket Sort}
+Time: Avg $O(n + k)$ | Worst $O(n^2)$ \\
+Space: $O(n + k)$ \\
+Distributes into buckets, sorts individually. Excellent for uniform data.
+
+\section{Algorithm Selection Guide}
+
+\subsection{Based on Input Size}
+\begin{itemize}
+    \item Small ($n < 100$): Insertion Sort
+    \item Medium ($100 < n < 10^5$): Randomized Quick Sort
+    \item Large ($n > 10^5$): Merge or Quick Sort (Rand)
+    \item Very Large ($n > 10^6$): Radix or Counting Sort
+\end{itemize}
+
+\subsection{Based on Data Type}
+\begin{itemize}
+    \item Integers (limited range): Counting Sort
+    \item Integers (any range): Radix or Quick Sort
+    \item Floating-point: Bucket or Merge Sort
+    \item General comparison: Merge or Quick Sort
+\end{itemize}
+
+\subsection{Based on Requirements}
+\begin{itemize}
+    \item Stability: Merge, Counting, Radix, Bucket
+    \item In-place: Heap, Quick Sort
+    \item Worst-case guarantee: Merge or Heap Sort
+    \item Best average: Quick Sort (Randomized)
+\end{itemize}
+
+\subsection{Special Cases}
+\begin{itemize}
+    \item Nearly sorted: Insertion or Bubble Sort
+    \item Many duplicates: Counting Sort
+    \item Linked list: Merge Sort
+    \item External sorting: Merge Sort
+\end{itemize}
+
+\section{Complexity Class Hierarchy}
+
+\begin{align*}
+O(1) &- \text{Constant (not applicable for sorting)} \\
+O(\log n) &- \text{Logarithmic (not applicable)} \\
+O(n) &- \text{Linear (Counting Sort when } k = O(1)) \\
+O(n \log n) &- \text{Optimal for comparison sorts (Merge, Heap, Quick avg)} \\
+O(n^2) &- \text{Quadratic (Bubble, Selection, Insertion, Quick worst)} \\
+O(n^3), O(2^n) &- \text{Not practical for sorting.}
+\end{align*}
+
+\noindent
+\textbf{Lower Bound Theorem:}\\
+Any comparison-based sorting algorithm requires $\Omega(n \log n)$ comparisons in the worst case.  
+Non-comparison sorts (Counting, Radix, Bucket) can achieve linear time $O(n)$.
+
+\vspace{1em}
+\begin{center}
+\textbf{--- END OF THEORETICAL ANALYSIS ---}
+\end{center}
+
+\end{document}
