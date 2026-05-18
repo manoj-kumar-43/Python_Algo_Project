@@ -1,9 +1,5 @@
 # Sorting Algorithms - Comparative Study
 
-**Design and Analysis of Algorithms (DAA) Project**  
-**Course:** DAA SEC-R  
-**Date:** November 2025
-
 ---
 
 ## 📋 Project Overview
